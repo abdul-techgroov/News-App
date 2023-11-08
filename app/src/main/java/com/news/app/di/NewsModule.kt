@@ -10,7 +10,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class NewsModule {
 
-    @Provides
+   /* @Provides
     @Singleton
-    fun getSampleInstance() = Sample()
+    fun getSampleInstance() = Sample()*/
 }
