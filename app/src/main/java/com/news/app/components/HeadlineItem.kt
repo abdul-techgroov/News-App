@@ -22,11 +22,12 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import coil.compose.rememberAsyncImagePainter
+import com.news.app.model.NewsData
 import com.news.app.ui.theme.Pink
 
 @Composable
 @Preview(showBackground = true)
-fun HeadlineItem(navigate: () -> Unit) {
+fun HeadlineItem(data: NewsData?, navigate: () -> Unit) {
     ConstraintLayout(
         modifier = Modifier
             .clickable {
@@ -36,7 +37,7 @@ fun HeadlineItem(navigate: () -> Unit) {
     ) {
         val (image, text) = createRefs()
 
-        Image(painter = rememberAsyncImagePainter(model = "https://via.placeholder.com/300.png/09f/fff"),
+        Image(painter = rememberAsyncImagePainter(model = data?.imageUrl),
             contentDescription = "",
             contentScale = ContentScale.Crop,
             modifier = Modifier
@@ -49,7 +50,7 @@ fun HeadlineItem(navigate: () -> Unit) {
                 }
         )
 
-        Text(text = "Trending",
+        Text(text = data?.title ?: "",
             style = TextStyle(
                 color = Color.White,
                 fontWeight = FontWeight.Bold,

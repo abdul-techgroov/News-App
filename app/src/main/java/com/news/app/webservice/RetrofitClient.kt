@@ -1,5 +1,6 @@
 package com.news.app.webservice
 
+import com.news.app.snippet.Constants.BASE_URL
 import com.squareup.moshi.Moshi
 import okhttp3.OkHttpClient
 import okhttp3.Protocol
@@ -10,14 +11,12 @@ import java.util.concurrent.TimeUnit
 
 class RetrofitClient() {
 
-    fun getSample() = "Client connected"
-
     fun getApiService(): ApiService =
         provideRetrofit(provideOkHttpClient()).create(ApiService::class.java)
 
     private fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("")
+            .baseUrl(BASE_URL)
             .addConverterFactory(
                 MoshiConverterFactory.create()
             )

@@ -3,6 +3,11 @@ package com.news.app.snippet
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 fun Context.hasNetworkConnection(): Boolean {
 
@@ -24,5 +29,16 @@ fun Context.hasNetworkConnection(): Boolean {
     }
 
     return isConnected
+}
 
+fun ViewModel.debounce(
+    waitMs: Long = 1000L,
+    debounceJob: Job?,
+    destinationFunction: () -> Unit
+): Job? {
+    debounceJob?.cancel()
+    return this.viewModelScope.launch {
+        delay(waitMs)
+        destinationFunction()
+    }
 }

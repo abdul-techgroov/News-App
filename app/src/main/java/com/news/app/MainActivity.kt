@@ -24,10 +24,8 @@ class MainActivity : ComponentActivity() {
 
     private lateinit var navController: NavHostController
 
-    @Inject lateinit var repo: NewsRepository
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        repo.checkClient()
         setContent {
             navController = rememberNavController()
             NewsTheme {

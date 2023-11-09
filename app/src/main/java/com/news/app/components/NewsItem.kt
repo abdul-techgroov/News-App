@@ -19,11 +19,12 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import coil.compose.rememberAsyncImagePainter
+import com.news.app.model.NewsData
 import com.news.app.ui.theme.LightBlue
 
 @Composable
 @Preview(showBackground = true)
-fun NewsItem() {
+fun NewsItem(newsData: NewsData?) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
@@ -31,7 +32,7 @@ fun NewsItem() {
     ) {
         val (image, heading, desc, readMore) = createRefs()
 
-        Image(painter = rememberAsyncImagePainter(model = "https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U"),
+        Image(painter = rememberAsyncImagePainter(model = newsData?.imageUrl),
             contentDescription = "",
             contentScale = ContentScale.Crop,
             modifier = Modifier
@@ -42,7 +43,7 @@ fun NewsItem() {
                     start.linkTo(parent.start)
                 })
 
-        Text(text = "Back to beinge. lsdjf lksj sdf sdf sdf sdf sd  sdfsdf sd fsd fsdfsdfsd fdsf",
+        Text(text = newsData?.title ?: "",
             style = TextStyle(
                 fontSize = 16.sp,
                 color = Color.White,
@@ -59,7 +60,7 @@ fun NewsItem() {
                     width = Dimension.fillToConstraints
                 })
 
-        Text(text = "Back to beinge. lsdjf lksj sdf sf sd fsd sd sd fsd fsd fsdf sdf sdfsdfsdfds     dsfsdf sdfsdf",
+        Text(text = newsData?.description ?: "",
             style = TextStyle(
                 fontSize = 16.sp,
                 color = Color.White,

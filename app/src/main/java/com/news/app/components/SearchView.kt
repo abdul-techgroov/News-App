@@ -10,21 +10,31 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.news.app.R
 import com.news.app.ui.theme.HintGrey
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
-fun SearchView(modifier: Modifier = Modifier) {
+fun SearchView(
+    modifier: Modifier = Modifier,
+    state: MutableState<String>,
+    callback: (String) -> Unit
+) {
     TextField(
-        value = "", onValueChange = {},
+        value = state.value, onValueChange = {
+            state.value = it
+            callback(it.trim())
+        },
         textStyle = LocalTextStyle.current.copy(
             textAlign = TextAlign.Center,
             fontSize = 16.sp,
@@ -32,7 +42,7 @@ fun SearchView(modifier: Modifier = Modifier) {
         ),
         placeholder = {
             Text(
-                text = "Testing",
+                text = stringResource(id = R.string.search_hint),
                 style = LocalTextStyle.current.copy(
                     textAlign = TextAlign.Center,
                     fontSize = 18.sp,
@@ -44,7 +54,10 @@ fun SearchView(modifier: Modifier = Modifier) {
         },
         shape = RoundedCornerShape(32.dp),
         colors = TextFieldDefaults.textFieldColors(
-            containerColor = Color.White
+            containerColor = Color.White,
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent,
+            disabledIndicatorColor = Color.Transparent
         ),
         singleLine = true,
         modifier = modifier

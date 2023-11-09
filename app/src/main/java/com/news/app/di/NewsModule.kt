@@ -1,6 +1,10 @@
 package com.news.app.di
 
 import android.content.Context
+import com.news.app.domain.usecase.NewsHeadlineUseCase
+import com.news.app.domain.usecase.NewsUseCase
+import com.news.app.paging.HeadlinesPagingSource
+import com.news.app.paging.NewsPagingSource
 import com.news.app.repository.NewsRepository
 import com.news.app.webservice.RetrofitClient
 import dagger.Module
@@ -24,5 +28,14 @@ class NewsModule {
     fun provideRetrofitClient() = RetrofitClient()
 
     @Provides
-    fun provideNewsRepository(retrofitClient: RetrofitClient, context: Context) = NewsRepository(retrofitClient, context)
+    fun provideNewsRepository(retrofitClient: RetrofitClient, context: Context) =
+        NewsRepository(retrofitClient, context)
+
+    @Provides
+    fun provideNewsHeadingUseCase(newsRepository: NewsRepository, context: Context) =
+        NewsHeadlineUseCase(newsRepository, context)
+
+    @Provides
+    fun provideNewsUseCase(newsRepository: NewsRepository, context: Context) =
+        NewsUseCase(newsRepository, context)
 }
