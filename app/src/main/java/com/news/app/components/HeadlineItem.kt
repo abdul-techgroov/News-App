@@ -2,6 +2,7 @@ package com.news.app.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -25,15 +26,17 @@ import com.news.app.ui.theme.Pink
 
 @Composable
 @Preview(showBackground = true)
-fun HeadlineItem() {
-
+fun HeadlineItem(navigate: () -> Unit) {
     ConstraintLayout(
         modifier = Modifier
+            .clickable {
+                navigate()
+            }
          .padding(horizontal = 8.dp)
     ) {
         val (image, text) = createRefs()
 
-        Image(painter = rememberAsyncImagePainter(model = "https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U"),
+        Image(painter = rememberAsyncImagePainter(model = "https://via.placeholder.com/300.png/09f/fff"),
             contentDescription = "",
             contentScale = ContentScale.Crop,
             modifier = Modifier
