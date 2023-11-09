@@ -12,6 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -21,7 +23,7 @@ import com.news.app.ui.theme.NewsTheme
 
 @Composable
 @Preview(showBackground = true)
-fun DetailPage(navController: NavHostController) {
+fun DetailPage(navController: NavHostController, titleInfo: String?) {
     NewsTheme {
         ConstraintLayout(
             modifier = Modifier
@@ -44,16 +46,20 @@ fun DetailPage(navController: NavHostController) {
                     }
             )
 
-            Text(text = "Testing",
+            Text(text = titleInfo ?: "",
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
-                    fontSize = 24.sp
+                    fontSize = 24.sp,
+                    textAlign = TextAlign.Center
                 ),
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis,
                 modifier = Modifier
                     .constrainAs(title) {
                         centerHorizontallyTo(parent)
                         centerVerticallyTo(parent)
-                    })
+                    }
+                    .padding(horizontal = 16.dp))
         }
     }
 }

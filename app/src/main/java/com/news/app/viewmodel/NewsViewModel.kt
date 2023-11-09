@@ -53,7 +53,6 @@ class NewsViewModel @Inject constructor(
                 }
             }
         }
-
     }
 
     fun fetchHeadlines(){

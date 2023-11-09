@@ -5,6 +5,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.news.app.navigation.PlaceHolder
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -42,3 +43,5 @@ fun ViewModel.debounce(
         destinationFunction()
     }
 }
+
+fun String.getRoute(title: String) = this.replace(PlaceHolder.TITLE, title)

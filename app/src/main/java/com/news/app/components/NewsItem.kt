@@ -2,6 +2,7 @@ package com.news.app.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -24,10 +25,13 @@ import com.news.app.ui.theme.LightBlue
 
 @Composable
 @Preview(showBackground = true)
-fun NewsItem(newsData: NewsData?) {
+fun NewsItem(newsData: NewsData?, navigate: () -> Unit) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable {
+                navigate()
+            }
             .padding(start = 16.dp, top = 32.dp, end = 16.dp)
     ) {
         val (image, heading, desc, readMore) = createRefs()

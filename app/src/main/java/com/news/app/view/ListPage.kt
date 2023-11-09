@@ -27,6 +27,7 @@ import com.news.app.components.NewsItem
 import com.news.app.components.ProgressIndicator
 import com.news.app.components.SearchView
 import com.news.app.navigation.Screens
+import com.news.app.snippet.getRoute
 import com.news.app.ui.theme.BgGrey
 import com.news.app.ui.theme.NewsTheme
 import com.news.app.viewmodel.NewsViewModel
@@ -81,7 +82,7 @@ fun ListingPage(navController: NavHostController) {
                     ) {
                         items(headlines.itemCount) {
                             HeadlineItem(headlines[it]) {
-                                navController.navigate(Screens.DETAIL)
+                                navController.navigate(Screens.DETAIL.getRoute(headlines[it]?.title ?: ""))
                             }
                         }
 
@@ -102,7 +103,9 @@ fun ListingPage(navController: NavHostController) {
 
             if (news.loadState.refresh != LoadState.Loading) {
                 items(news.itemCount) {
-                    NewsItem(news[it])
+                    NewsItem(news[it]) {
+                        navController.navigate(Screens.DETAIL.getRoute(headlines[it]?.title ?: ""))
+                    }
                 }
             }
 
