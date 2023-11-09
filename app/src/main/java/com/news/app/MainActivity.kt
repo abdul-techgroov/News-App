@@ -12,6 +12,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.news.app.navigation.CreateNavigationGraph
+import com.news.app.repository.NewsRepository
 import com.news.app.ui.theme.NewsTheme
 import com.news.app.view.ListingPage
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,8 +24,10 @@ class MainActivity : ComponentActivity() {
 
     private lateinit var navController: NavHostController
 
+    @Inject lateinit var repo: NewsRepository
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        repo.checkClient()
         setContent {
             navController = rememberNavController()
             NewsTheme {

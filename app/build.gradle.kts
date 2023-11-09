@@ -84,6 +84,7 @@ dependencies {
     //Retrofit
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     api("com.squareup.retrofit2:converter-moshi:2.7.2")
+    add("kapt", "com.squareup.moshi:moshi-kotlin-codegen:1.9.3")
 
     //Image library
     implementation("io.coil-kt:coil-compose:2.2.2")
