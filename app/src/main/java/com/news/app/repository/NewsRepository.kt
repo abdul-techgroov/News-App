@@ -5,6 +5,7 @@ import com.news.app.model.NewsResponse
 import com.news.app.snippet.Constants.API_KEY
 import com.news.app.webservice.RetrofitClient
 import dagger.hilt.android.qualifiers.ApplicationContext
+import okhttp3.ResponseBody
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -21,5 +22,9 @@ class NewsRepository @Inject constructor(
     suspend fun fetchNews(page: Int, query: String): Response<NewsResponse> {
         return apiClient.getApiService()
             .fetchNews(API_KEY, page = page, query = query)
+    }
+
+    suspend fun downloadImage(url: String): ResponseBody {
+        return apiClient.getApiService().downloadImage(url)
     }
 }

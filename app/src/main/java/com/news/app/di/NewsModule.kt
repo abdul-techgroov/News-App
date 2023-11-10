@@ -1,6 +1,8 @@
 package com.news.app.di
 
 import android.content.Context
+import com.news.app.db.DatabaseProvider
+import com.news.app.db.dao.NewsDao
 import com.news.app.domain.usecase.NewsHeadlineUseCase
 import com.news.app.domain.usecase.NewsUseCase
 import com.news.app.paging.HeadlinesPagingSource
@@ -36,6 +38,10 @@ class NewsModule {
         NewsHeadlineUseCase(newsRepository, context)
 
     @Provides
-    fun provideNewsUseCase(newsRepository: NewsRepository, context: Context) =
-        NewsUseCase(newsRepository, context)
+    fun provideNewsDao(context: Context) =
+        DatabaseProvider.getNewsDataBase(context).newsDao()
+
+    @Provides
+    fun provideNewsUseCase(newsRepository: NewsRepository, context: Context, newsDao: NewsDao) =
+        NewsUseCase(newsRepository, context, newsDao)
 }

@@ -27,11 +27,11 @@ import com.news.app.ui.theme.Pink
 
 @Composable
 @Preview(showBackground = true)
-fun HeadlineItem(data: NewsData?, navigate: () -> Unit) {
+fun HeadlineItem(data: NewsData?, navigate: (String) -> Unit) {
     ConstraintLayout(
         modifier = Modifier
             .clickable {
-                navigate()
+                navigate(data?.title ?: "")
             }
          .padding(horizontal = 8.dp)
     ) {

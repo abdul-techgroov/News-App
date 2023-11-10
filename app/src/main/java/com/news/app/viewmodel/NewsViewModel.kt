@@ -15,7 +15,6 @@ import com.news.app.snippet.Constants
 import com.news.app.snippet.debounce
 import com.news.app.state.NewsState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,6 +37,8 @@ class NewsViewModel @Inject constructor(
 
     private var searchJob: Job? = null
 
+    private var isOnline = true
+
     private var _newsStateFlow: MutableSharedFlow<NewsState> = MutableSharedFlow()
     val newsStateFlow: SharedFlow<NewsState> = _newsStateFlow.asSharedFlow()
 
@@ -47,7 +48,7 @@ class NewsViewModel @Inject constructor(
             viewModelScope.launch {
                 Pager(
                     config = PagingConfig(pageSize = Constants.PAGE_SIZE, initialLoadSize = 1),
-                    pagingSourceFactory = { NewsPagingSource(newsUseCase, query) }
+                    pagingSourceFactory = { NewsPagingSource(newsUseCase, query, isOnline) }
                 ).flow.cachedIn(viewModelScope).collect {
                     newsState.value = it
                 }
@@ -66,4 +67,7 @@ class NewsViewModel @Inject constructor(
         }
     }
 
+    fun updateOnline(online: Boolean){
+        isOnline = online
+    }
 }

@@ -10,6 +10,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -21,31 +23,44 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import coil.compose.rememberAsyncImagePainter
 import com.news.app.model.NewsData
+import com.news.app.snippet.getBitmapFromByteArray
 import com.news.app.ui.theme.LightBlue
 
 @Composable
 @Preview(showBackground = true)
-fun NewsItem(newsData: NewsData?, navigate: () -> Unit) {
+fun NewsItem(newsData: NewsData?, navigate: (String) -> Unit) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-                navigate()
+                navigate(newsData?.title ?: "")
             }
             .padding(start = 16.dp, top = 32.dp, end = 16.dp)
     ) {
         val (image, heading, desc, readMore) = createRefs()
 
-        Image(painter = rememberAsyncImagePainter(model = newsData?.imageUrl),
-            contentDescription = "",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(140.dp)
-                .background(Color.Black)
-                .constrainAs(image) {
-                    centerVerticallyTo(parent)
-                    start.linkTo(parent.start)
-                })
+        if (newsData?.image == null)
+            Image(painter = rememberAsyncImagePainter(model = newsData?.imageUrl),
+                contentDescription = "",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(140.dp)
+                    .background(Color.Black)
+                    .constrainAs(image) {
+                        centerVerticallyTo(parent)
+                        start.linkTo(parent.start)
+                    })
+        else
+            Image(bitmap = newsData.image.asImageBitmap(),
+                contentDescription = "",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(140.dp)
+                    .background(Color.Black)
+                    .constrainAs(image) {
+                        centerVerticallyTo(parent)
+                        start.linkTo(parent.start)
+                    })
 
         Text(text = newsData?.title ?: "",
             style = TextStyle(

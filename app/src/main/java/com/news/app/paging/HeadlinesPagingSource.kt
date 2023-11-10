@@ -10,12 +10,12 @@ class HeadlinesPagingSource @Inject constructor(
 ) : BasePagingSource<NewsData>(Constants.PAGE_SIZE) {
     private var page = 1
     override suspend fun performApiCall(params: LoadParams<Int>): Pair<Int, MutableList<NewsData>?> {
-        val response = newsHeadlineUseCase.fetchHeadlines(page)
+        /*val response = newsHeadlineUseCase.fetchHeadlines(page)
         page += 1
         return if (response.isNullOrEmpty())
             Pair(page, null)
         else
-            Pair(page, response)
-//        return Pair(page, null)
+            Pair(page, response)*/
+        return Pair(page, null)
     }
 }

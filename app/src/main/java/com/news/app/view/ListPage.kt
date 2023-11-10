@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -28,6 +29,7 @@ import com.news.app.components.ProgressIndicator
 import com.news.app.components.SearchView
 import com.news.app.navigation.Screens
 import com.news.app.snippet.getRoute
+import com.news.app.snippet.hasNetworkConnection
 import com.news.app.ui.theme.BgGrey
 import com.news.app.ui.theme.NewsTheme
 import com.news.app.viewmodel.NewsViewModel
@@ -44,6 +46,8 @@ fun ListingPage(navController: NavHostController) {
     val news =  viewModel.newsState.collectAsLazyPagingItems()
     val searchState = remember { mutableStateOf("") }
 
+    viewModel.updateOnline(LocalContext.current.hasNetworkConnection())
+
     LaunchedEffect(key1 = Unit, block = {
         viewModel.fetchNews("")
         viewModel.fetchHeadlines()
@@ -58,17 +62,19 @@ fun ListingPage(navController: NavHostController) {
             state = scrollState
         ) {
 
-            item {
-                SearchView(
-                    modifier = Modifier
-                        .graphicsLayer {
-                            scrolledVertical += scrollState.firstVisibleItemScrollOffset - previousOffset
-                            translationY = scrolledVertical * 0.5f
-                            previousOffset = scrollState.firstVisibleItemScrollOffset
-                        },
-                    searchState
-                ){
-                    viewModel.fetchNews(it)
+            if (news.itemCount > 0 || searchState.value.isNotEmpty()) {
+                item {
+                    SearchView(
+                        modifier = Modifier
+                            .graphicsLayer {
+                                scrolledVertical += scrollState.firstVisibleItemScrollOffset - previousOffset
+                                translationY = scrolledVertical * 0.5f
+                                previousOffset = scrollState.firstVisibleItemScrollOffset
+                            },
+                        searchState
+                    ) {
+                        viewModel.fetchNews(it)
+                    }
                 }
             }
 
@@ -81,8 +87,8 @@ fun ListingPage(navController: NavHostController) {
                             .padding(top = 12.dp)
                     ) {
                         items(headlines.itemCount) {
-                            HeadlineItem(headlines[it]) {
-                                navController.navigate(Screens.DETAIL.getRoute(headlines[it]?.title ?: ""))
+                            HeadlineItem(headlines[it]) { title ->
+                                navController.navigate(Screens.DETAIL.getRoute(title))
                             }
                         }
 
@@ -103,8 +109,8 @@ fun ListingPage(navController: NavHostController) {
 
             if (news.loadState.refresh != LoadState.Loading) {
                 items(news.itemCount) {
-                    NewsItem(news[it]) {
-                        navController.navigate(Screens.DETAIL.getRoute(headlines[it]?.title ?: ""))
+                    NewsItem(news[it]) {title ->
+                        navController.navigate(Screens.DETAIL.getRoute(title))
                     }
                 }
             }

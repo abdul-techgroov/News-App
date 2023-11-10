@@ -15,10 +15,6 @@ class NewsHeadlineUseCase @Inject constructor(
     suspend fun fetchHeadlines(page: Int): MutableList<NewsData>? {
         val response = newsRepository.fetchHeadlines(page)
         return if (response.isSuccessful && response.body()?.articles.isNullOrEmpty().not()) {
-            Log.d(
-                "Thread==",
-                "===main===${Looper.myLooper() == Looper.getMainLooper()}===${response.body()?.articles?.size}"
-            )
             response.body()?.articles
         } else {
             mutableListOf()
