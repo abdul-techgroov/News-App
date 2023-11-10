@@ -1,7 +1,6 @@
 package com.news.app.webservice
 
 import com.news.app.snippet.Constants.BASE_URL
-import com.squareup.moshi.Moshi
 import okhttp3.OkHttpClient
 import okhttp3.Protocol
 import okhttp3.internal.immutableListOf

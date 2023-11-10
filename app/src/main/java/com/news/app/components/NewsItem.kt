@@ -10,7 +10,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
@@ -23,8 +22,9 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import coil.compose.rememberAsyncImagePainter
 import com.news.app.model.NewsData
-import com.news.app.snippet.getBitmapFromByteArray
+import com.news.app.snippet.getRelativeTimeSpanString
 import com.news.app.ui.theme.LightBlue
+import com.news.app.ui.theme.TextGrey
 
 @Composable
 @Preview(showBackground = true)
@@ -37,7 +37,7 @@ fun NewsItem(newsData: NewsData?, navigate: (String) -> Unit) {
             }
             .padding(start = 16.dp, top = 32.dp, end = 16.dp)
     ) {
-        val (image, heading, desc, readMore) = createRefs()
+        val (image, heading, desc, readMore, time) = createRefs()
 
         if (newsData?.image == null)
             Image(painter = rememberAsyncImagePainter(model = newsData?.imageUrl),
@@ -94,6 +94,21 @@ fun NewsItem(newsData: NewsData?, navigate: (String) -> Unit) {
                     start.linkTo(image.end)
                     end.linkTo(parent.end)
                     width = Dimension.fillToConstraints
+                })
+
+        Text(text = newsData?.time?.getRelativeTimeSpanString() ?: "",
+            style = TextStyle(
+                fontSize = 12.sp,
+                color = TextGrey,
+                fontWeight = FontWeight.ExtraBold
+            ),
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier
+                .padding(start = 8.dp)
+                .constrainAs(time) {
+                    start.linkTo(desc.start)
+                    bottom.linkTo(image.bottom)
                 })
 
 

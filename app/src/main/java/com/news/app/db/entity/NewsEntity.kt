@@ -7,6 +7,7 @@ import com.news.app.snippet.Database.DESCRIPTION
 import com.news.app.snippet.Database.ID
 import com.news.app.snippet.Database.IMAGE
 import com.news.app.snippet.Database.NEWS
+import com.news.app.snippet.Database.TIME
 import com.news.app.snippet.Database.TITLE
 
 @Entity(tableName = NEWS)
@@ -18,6 +19,8 @@ data class NewsEntity(
     val title: String,
     @ColumnInfo(name = DESCRIPTION)
     val description: String,
+    @ColumnInfo(name = TIME)
+    val time: String,
     @ColumnInfo(name = IMAGE, typeAffinity = ColumnInfo.BLOB)
     val image: ByteArray?,
 ) {
@@ -30,7 +33,11 @@ data class NewsEntity(
         if (id != other.id) return false
         if (title != other.title) return false
         if (description != other.description) return false
-        if (!image.contentEquals(other.image)) return false
+        if (time != other.time) return false
+        if (image != null) {
+            if (other.image == null) return false
+            if (!image.contentEquals(other.image)) return false
+        } else if (other.image != null) return false
 
         return true
     }
@@ -39,7 +46,8 @@ data class NewsEntity(
         var result = id.hashCode()
         result = 31 * result + title.hashCode()
         result = 31 * result + description.hashCode()
-        result = 31 * result + image.contentHashCode()
+        result = 31 * result + time.hashCode()
+        result = 31 * result + (image?.contentHashCode() ?: 0)
         return result
     }
 }

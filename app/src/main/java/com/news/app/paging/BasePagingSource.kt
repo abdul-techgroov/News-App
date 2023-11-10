@@ -25,11 +25,11 @@ abstract class BasePagingSource<T : Any>(private var limit: Int) : PagingSource<
                 loadMore = data.second.isNullOrEmpty().not() || (data.second?.size ?: 0) >= limit
                 itemCount += data.second?.size ?: 0
                 LoadResult.Page(
-                        data = data.second ?: listOf(),
-                        prevKey = params.key,
-                        nextKey = data.first
+                    data = data.second ?: listOf(),
+                    prevKey = params.key,
+                    nextKey = data.first
                 )
-            }else{
+            } else {
                 LoadResult.Error(IOException("No more data"))
             }
         } catch (e: IOException) {

@@ -10,17 +10,19 @@ import com.news.app.view.DetailPage
 import com.news.app.view.ListingPage
 
 @Composable
-fun CreateNavigationGraph(navController: NavHostController){
-    NavHost(navController = navController, startDestination = Screens.LIST){
-        composable(Screens.LIST){
+fun CreateNavigationGraph(navController: NavHostController) {
+    NavHost(navController = navController, startDestination = Screens.LIST) {
+        composable(Screens.LIST) {
             ListingPage(navController)
         }
         composable(
             Screens.DETAIL,
-            arguments = listOf(navArgument(Arguments.TITLE){ type = NavType.StringType })
-        ){
-            DetailPage(navController,
-                it.arguments?.getString(Arguments.TITLE))
+            arguments = listOf(navArgument(Arguments.TITLE) { type = NavType.StringType })
+        ) {
+            DetailPage(
+                navController,
+                it.arguments?.getString(Arguments.TITLE)
+            )
         }
     }
 }

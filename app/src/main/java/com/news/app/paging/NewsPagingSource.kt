@@ -12,7 +12,8 @@ class NewsPagingSource(
     private var page = 1
 
     override suspend fun performApiCall(params: LoadParams<Int>): Pair<Int, MutableList<NewsData>?> {
-        val response = newsUseCase.fetchNews(page, query.ifEmpty { Constants.DEFAULT_QUERY }, isOnline)
+        val response =
+            newsUseCase.fetchNews(page, query.ifEmpty { Constants.DEFAULT_QUERY }, isOnline)
         page += 1
         return if (response.isNullOrEmpty())
             Pair(page, null)

@@ -42,8 +42,8 @@ fun ListingPage(navController: NavHostController) {
     var scrolledVertical = 0f
     var previousOffset = 0
     val viewModel: NewsViewModel = hiltViewModel()
-    val headlines =  viewModel.headlineState.collectAsLazyPagingItems()
-    val news =  viewModel.newsState.collectAsLazyPagingItems()
+    val headlines = viewModel.headlineState.collectAsLazyPagingItems()
+    val news = viewModel.newsState.collectAsLazyPagingItems()
     val searchState = remember { mutableStateOf("") }
 
     viewModel.updateOnline(LocalContext.current.hasNetworkConnection())
@@ -109,7 +109,7 @@ fun ListingPage(navController: NavHostController) {
 
             if (news.loadState.refresh != LoadState.Loading) {
                 items(news.itemCount) {
-                    NewsItem(news[it]) {title ->
+                    NewsItem(news[it]) { title ->
                         navController.navigate(Screens.DETAIL.getRoute(title))
                     }
                 }
@@ -120,10 +120,13 @@ fun ListingPage(navController: NavHostController) {
             }
 
             if (news.loadState.refresh == LoadState.Loading ||
-                news.loadState.append == LoadState.Loading) {
+                news.loadState.append == LoadState.Loading
+            ) {
                 item {
-                    ProgressIndicator(modifier = Modifier
-                        .size(40.dp))
+                    ProgressIndicator(
+                        modifier = Modifier
+                            .size(40.dp)
+                    )
                 }
             }
         }

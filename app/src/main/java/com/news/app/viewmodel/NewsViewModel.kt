@@ -13,13 +13,9 @@ import com.news.app.paging.HeadlinesPagingSource
 import com.news.app.paging.NewsPagingSource
 import com.news.app.snippet.Constants
 import com.news.app.snippet.debounce
-import com.news.app.state.NewsState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -39,12 +35,8 @@ class NewsViewModel @Inject constructor(
 
     private var isOnline = true
 
-    private var _newsStateFlow: MutableSharedFlow<NewsState> = MutableSharedFlow()
-    val newsStateFlow: SharedFlow<NewsState> = _newsStateFlow.asSharedFlow()
-
-
-    fun fetchNews(query: String){
-        searchJob = debounce(500L, searchJob){
+    fun fetchNews(query: String) {
+        searchJob = debounce(500L, searchJob) {
             viewModelScope.launch {
                 Pager(
                     config = PagingConfig(pageSize = Constants.PAGE_SIZE, initialLoadSize = 1),
@@ -56,18 +48,18 @@ class NewsViewModel @Inject constructor(
         }
     }
 
-    fun fetchHeadlines(){
+    fun fetchHeadlines() {
         viewModelScope.launch {
             Pager(
                 config = PagingConfig(pageSize = Constants.PAGE_SIZE, initialLoadSize = 1),
-                pagingSourceFactory = { HeadlinesPagingSource(newsHeadlineUseCase) }
+                pagingSourceFactory = { HeadlinesPagingSource(newsHeadlineUseCase, isOnline) }
             ).flow.cachedIn(viewModelScope).collect {
                 headlineState.value = it
             }
         }
     }
 
-    fun updateOnline(online: Boolean){
+    fun updateOnline(online: Boolean) {
         isOnline = online
     }
 }

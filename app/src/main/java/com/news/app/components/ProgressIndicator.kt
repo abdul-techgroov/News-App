@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun ProgressIndicator(modifier: Modifier){
+fun ProgressIndicator(modifier: Modifier) {
     CircularProgressIndicator(
         modifier = modifier
     )

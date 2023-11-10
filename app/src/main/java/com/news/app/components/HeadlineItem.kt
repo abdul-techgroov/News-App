@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -33,22 +34,37 @@ fun HeadlineItem(data: NewsData?, navigate: (String) -> Unit) {
             .clickable {
                 navigate(data?.title ?: "")
             }
-         .padding(horizontal = 8.dp)
+            .padding(horizontal = 8.dp)
     ) {
         val (image, text) = createRefs()
 
-        Image(painter = rememberAsyncImagePainter(model = data?.imageUrl),
-            contentDescription = "",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(72.dp)
-                .clip(CircleShape)
-                .border(2.dp, Pink, CircleShape)
-                .constrainAs(image) {
-                    centerHorizontallyTo(parent)
-                    top.linkTo(parent.top)
-                }
-        )
+        if (data?.image == null) {
+            Image(painter = rememberAsyncImagePainter(model = data?.imageUrl),
+                contentDescription = "",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(72.dp)
+                    .clip(CircleShape)
+                    .border(2.dp, Pink, CircleShape)
+                    .constrainAs(image) {
+                        centerHorizontallyTo(parent)
+                        top.linkTo(parent.top)
+                    }
+            )
+        } else {
+            Image(bitmap = data.image.asImageBitmap(),
+                contentDescription = "",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(72.dp)
+                    .clip(CircleShape)
+                    .border(2.dp, Pink, CircleShape)
+                    .constrainAs(image) {
+                        centerHorizontallyTo(parent)
+                        top.linkTo(parent.top)
+                    }
+            )
+        }
 
         Text(text = data?.title ?: "",
             style = TextStyle(
@@ -61,7 +77,7 @@ fun HeadlineItem(data: NewsData?, navigate: (String) -> Unit) {
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier
                 .padding(top = 2.dp)
-                .constrainAs(text){
+                .constrainAs(text) {
                     centerHorizontallyTo(parent)
                     top.linkTo(image.bottom)
                     width = Dimension.fillToConstraints

@@ -2,11 +2,10 @@ package com.news.app.di
 
 import android.content.Context
 import com.news.app.db.DatabaseProvider
+import com.news.app.db.dao.HeadlineDao
 import com.news.app.db.dao.NewsDao
 import com.news.app.domain.usecase.NewsHeadlineUseCase
 import com.news.app.domain.usecase.NewsUseCase
-import com.news.app.paging.HeadlinesPagingSource
-import com.news.app.paging.NewsPagingSource
 import com.news.app.repository.NewsRepository
 import com.news.app.webservice.RetrofitClient
 import dagger.Module
@@ -25,6 +24,7 @@ class NewsModule {
     fun provideContext(@ApplicationContext context: Context): Context {
         return context
     }
+
     @Provides
     @Singleton
     fun provideRetrofitClient() = RetrofitClient()
@@ -34,14 +34,22 @@ class NewsModule {
         NewsRepository(retrofitClient, context)
 
     @Provides
-    fun provideNewsHeadingUseCase(newsRepository: NewsRepository, context: Context) =
-        NewsHeadlineUseCase(newsRepository, context)
-
-    @Provides
     fun provideNewsDao(context: Context) =
         DatabaseProvider.getNewsDataBase(context).newsDao()
 
     @Provides
+    fun provideHeadlineDao(context: Context) =
+        DatabaseProvider.getNewsDataBase(context).headlineDao()
+
+    @Provides
     fun provideNewsUseCase(newsRepository: NewsRepository, context: Context, newsDao: NewsDao) =
         NewsUseCase(newsRepository, context, newsDao)
+
+    @Provides
+    fun provideNewsHeadingUseCase(
+        newsRepository: NewsRepository,
+        context: Context,
+        headlineDao: HeadlineDao
+    ) =
+        NewsHeadlineUseCase(newsRepository, context, headlineDao)
 }

@@ -8,15 +8,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.news.app.navigation.CreateNavigationGraph
-import com.news.app.repository.NewsRepository
 import com.news.app.ui.theme.NewsTheme
-import com.news.app.view.ListingPage
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 @Keep

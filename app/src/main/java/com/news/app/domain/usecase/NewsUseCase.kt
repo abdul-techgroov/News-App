@@ -22,14 +22,13 @@ class NewsUseCase @Inject constructor(
     private val newsDao: NewsDao
 ) {
     suspend fun fetchNews(page: Int, query: String, isOnline: Boolean): MutableList<NewsData>? {
-        if (isOnline){
+        if (isOnline) {
             val response = newsRepository.fetchNews(page, query)
             return if (response.isSuccessful && response.body()?.articles.isNullOrEmpty().not()) {
                 GlobalScope.launch(Dispatchers.IO) {
                     if (page == 1)
                         newsDao.deleteAllData()
                     response.body()?.articles?.map {
-//                        val image = it.imageUrl?.let { it1 -> newsRepository.downloadImage(it1) }
                         newsDao.insertNewsData(it.getNewsEntity(it.imageUrl?.getByteArrayFromURL()))
                     }
                 }
@@ -40,18 +39,19 @@ class NewsUseCase @Inject constructor(
                 }
                 mutableListOf()
             }
-        }else {
+        } else {
             val localData = newsDao.fetchNews(
-                (page-1) * Constants.PAGE_SIZE,
-                Constants.PAGE_SIZE, query)
+                (page - 1) * Constants.PAGE_SIZE,
+                Constants.PAGE_SIZE, query
+            )
 
-            return if (localData.isNotEmpty()){
+            return if (localData.isNotEmpty()) {
                 val newsList = mutableListOf<NewsData>()
                 localData.map {
                     newsList.add(it.getNewsData())
                 }
                 newsList
-            }else {
+            } else {
                 mutableListOf()
             }
         }
